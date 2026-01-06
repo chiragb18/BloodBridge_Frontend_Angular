@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { User } from '../../services/user';
+import { StorageService } from '../../services/storage';
 
 @Component({
   selector: 'app-login',
@@ -17,37 +18,24 @@ export class Login {
     password: ''
   };
 
-  constructor(private router: Router, private userService: User) { }
+  constructor(private router: Router, private userService: User,private storage:StorageService) { }
 
   onLogin() {
-    this.userService.login(this.loginData.email, this.loginData.password).subscribe({
-      next: (users) => {
-        if (users && users.length > 0) {
-          const user = users[0];
-          // Save login status
-          localStorage.setItem('loggedInUser', JSON.stringify(user));
-          alert('Login successful!');
-          console.log('user logged in :', user);
-          // Role-based navigation
-          if (user.role === 'ADMIN') {
-            this.router.navigate(['/admin/dashboard']);
-          } else if (user.role === 'DONOR') {
-            this.router.navigate(['/donor/dashboard']);
-          } else if (user.role === 'HOSPITAL') {
-            this.router.navigate(['/hospital/dashboard']);
-          }
-        } else {
-          alert('Invalid email or password');
-        }
-      },
-      error: (error) => {
-        console.error('Login error:', error);
-        if (error.status === 0) {
-          alert('Cannot connect to the backend server. Please make sure it is running.');
-        } else {
-          alert('An error occurred during login. Please try again.');
-        }
+        const user = this.storage.login(this.loginData.email, this.loginData.password);
+
+    if (user) {
+      this.storage.setLoggedInUser(user);
+
+      if (user.role === 'DONOR') {
+        this.router.navigate(['/donor-dashboard']);
+      } else if (user.role === 'HOSPITAL') {
+        this.router.navigate(['/hospital-dashboard']);
+      } else {
+        this.router.navigate(['/admin-dashboard']);
       }
-    });
+
+    } else {
+      alert('Invalid credentials');
+    }
   }
 }

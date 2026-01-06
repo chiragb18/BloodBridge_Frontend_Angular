@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class User {
-  private apiUrl = 'http://localhost:5000/users';
+  private apiUrl = 'http://localhost:3000/users';
 
   constructor(private http: HttpClient) { }
 
@@ -32,7 +32,7 @@ export class User {
   }
 
   // --- Hospital Request Management ---
-  private requestUrl = 'http://localhost:5000/requests';
+  private requestUrl = 'http://localhost:3000/requests';
 
   getRequests() {
     return this.http.get<any[]>(this.requestUrl);
