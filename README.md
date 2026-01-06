@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # BloodBankAIFrontend
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
@@ -154,3 +155,7 @@ The project is deployed on Vercel.
 
 https://bloodbridge-frontend.vercel.app
 >>>>>>> 5acf39145f1c70a7297d87277c85abc27f0263f7
+=======
+# BloodBridge_Frontend_Angular
+BloodBridge is a real-time blood bank management system that connects Hospitals, Donors, and Admins on a single platform. It enables hospitals to request blood units, admins to manage inventory and approvals, and donors to contribute efficiently—ensuring timely availability of blood when it matters most.
+>>>>>>> 9953878fd0b864c91e46cf67eb6e18a0b2e477dc
