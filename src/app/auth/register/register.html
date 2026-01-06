@@ -1,0 +1,40 @@
+<div class="auth-container">
+  <form class="auth-card" (ngSubmit)="onRegister()" #registerForm="ngForm">
+    <h2>Create Account</h2>
+
+    <input type="text" placeholder="Full Name" [(ngModel)]="user.name" name="name" required />
+
+    <input type="email" placeholder="Email Address" [(ngModel)]="user.email" name="email" required />
+
+    <input type="password" placeholder="Password" [(ngModel)]="user.password" name="password" required />
+
+    <select [(ngModel)]="user.role" name="role" (change)="onRoleChange()" required>
+      <option value="">Select Role</option>
+      <option value="DONOR">Donor</option>
+      <option value="HOSPITAL">Hospital</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+
+    <div *ngIf="user.role === 'DONOR'">
+      <select name="bloodGroup" [(ngModel)]="user.bloodGroup" required>
+        <option value="">Select Blood Group</option>
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+      </select>
+    </div>
+    <!-- <p style="color:red">Selected Role: {{ user.role }}</p> -->
+
+    <button type="submit">Register</button>
+
+    <p class="switch-link">
+      Already registered?
+      <a routerLink="/login">Login here</a>
+    </p>
+  </form>
+</div>

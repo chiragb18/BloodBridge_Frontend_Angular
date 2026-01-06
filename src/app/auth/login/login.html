@@ -1,0 +1,20 @@
+<div class="auth-container">
+
+  <!-- Login Form -->
+  <form class="auth-card" (ngSubmit)="onLogin()">
+    <h2>Login</h2>
+    <p class="subtitle">Welcome back! Please enter your details.</p>
+
+    <input type="email" placeholder="Email Address" [(ngModel)]="loginData.email" name="email" required />
+
+    <input type="password" placeholder="Password" [(ngModel)]="loginData.password" name="password" required />
+
+    <button type="submit">Login</button>
+
+    <p class="switch-link">
+      Don’t have an account?
+      <a routerLink="/register">Register here</a>
+    </p>
+  </form>
+
+</div>

@@ -1,0 +1,210 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7f6;
+  margin: 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.header h2 {
+  color: #c0392b;
+  margin: 0;
+}
+
+.user-info a {
+  cursor: pointer;
+  color: #c0392b;
+  margin-left: 10px;
+  text-decoration: underline;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  margin-top: 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  color: #333;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-table td {
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-table tr:last-child td {
+  border-bottom: none;
+}
+
+.rules-box {
+  background: #fff8f8;
+  border: 1px solid #ffcccc;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 15px 0;
+  font-size: 0.9em;
+}
+
+.rules-box h4 {
+  margin-top: 0;
+  color: #c0392b;
+}
+
+.rules-box ul {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+
+.btn-donate {
+  width: 100%;
+  padding: 12px;
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-cert {
+  width: 100%;
+  padding: 10px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-donate:hover {
+  background-color: #a93226;
+}
+
+.btn-cert:hover {
+  background-color: #219150;
+}
+
+.status-ready {
+  color: green;
+  font-weight: bold;
+}
+
+.status-wait {
+  color: #d35400;
+}
+
+/* Printable Certificate */
+.printable-certificate {
+  display: none;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .printable-certificate,
+  .printable-certificate * {
+    visibility: visible;
+  }
+
+  .printable-certificate {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding: 50px;
+  }
+
+  .cert-border {
+    border: 10px solid #c0392b;
+    padding: 40px;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #c0392b;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.status-pending {
+  color: #f39c12;
+  font-weight: bold;
+}
+
+.btn-pending {
+  width: 100%;
+  padding: 12px;
+  background-color: #f1c40f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.status-rejected {
+  color: #c0392b;
+  font-weight: bold;
+}

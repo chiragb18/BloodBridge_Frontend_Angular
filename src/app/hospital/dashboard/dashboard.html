@@ -1,0 +1,100 @@
+<div class="dashboard-wrap">
+    <!-- Top Glassy Header -->
+    <header class="top-nav">
+        <div class="nav-brand">
+            <span class="icon">🏥</span>
+            <h1>Hospital Portal</h1>
+        </div>
+        <div class="user-pill">
+            <span class="hospital-name">{{ hospitalName }}</span>
+            <button class="logout-pill" (click)="logout()">Logout</button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="grid-layout">
+
+            <!-- New Request Form Card -->
+            <section class="request-card slide-in">
+                <div class="card-header">
+                    <span class="card-icon">🩸</span>
+                    <h2>Create New Request</h2>
+                </div>
+                <p class="subtitle">Enter patient details to request blood units from the central bank.</p>
+
+                <form (ngSubmit)="submitRequest()" class="soft-form">
+                    <div class="input-group">
+                        <label>Patient Name</label>
+                        <input type="text" [(ngModel)]="newRequest.patientName" name="patientName"
+                            placeholder="Full patient name" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-group half">
+                            <label>Blood Group</label>
+                            <select [(ngModel)]="newRequest.bloodGroup" name="bloodGroup" required>
+                                <option value="" disabled selected>Select Group</option>
+                                <option *ngFor="let bg of ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']"
+                                    [value]="bg">{{ bg }}</option>
+                            </select>
+                        </div>
+                        <div class="input-group half">
+                            <label>Units Needed</label>
+                            <input type="number" [(ngModel)]="newRequest.units" name="units" min="1" max="10">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Send Blood Request</button>
+                </form>
+            </section>
+
+            <!-- History Table Card -->
+            <section class="history-card slide-in-delay">
+                <div class="card-header">
+                    <span class="card-icon">📋</span>
+                    <h2>Request Status</h2>
+                </div>
+
+                <div class="table-container">
+                    <table *ngIf="myRequests.length > 0; else noData">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Units</th>
+                                <th>Group</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let req of myRequests">
+                                <td>
+                                    <div class="patient-name">{{ req.patientName }}</div>
+                                    <div class="date">{{ req.requestDate | date:'MMM d, h:mm a' }}</div>
+                                </td>
+                                <td>{{ req.units }} Unit(s)</td>
+                                <td><span class="blood-pill">{{ req.bloodGroup }}</span></td>
+                                <td>
+                                    <span [class]="'status-pill ' + req.status.toLowerCase()">
+                                        {{ req.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn-delete" (click)="deleteRequest(req.id)" title="Delete Request">
+                                        🗑️
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noData>
+                        <div class="empty-state">
+                            <p>No requests made yet. Use the form to start.</p>
+                        </div>
+                    </ng-template>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Restored Background Image */
+  background: url('/assets/b2.jpg') no-repeat center center/cover;
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Overlay for readability */
+.auth-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  /* Dark overlay */
+  z-index: 1;
+}
+
+.auth-card {
+  width: 380px;
+  background: white;
+  padding: 50px 40px;
+  border-radius: 24px;
+  /* Softer rounded corners */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  /* Slightly stronger shadow for depth */
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  /* Sit above overlay */
+  animation: floatIn 0.6s ease-out;
+}
+
+.auth-card h2 {
+  margin-bottom: 10px;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+
+.auth-card p.subtitle {
+  color: #95a5a6;
+  font-size: 0.9rem;
+  margin-bottom: 40px;
+}
+
+/* Input Fields - Soft & Clean */
+.auth-card input {
+  width: 100%;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 50px;
+  /* Pill shape */
+  border: 1px solid #eee;
+  background: #f8f9fa;
+  font-size: 0.95rem;
+  color: #333;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.auth-card input:focus {
+  border-color: #ff6b6b;
+  background: white;
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.1);
+  outline: none;
+}
+
+/* Button - Attractive Gradient */
+.auth-card button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(45deg, #ff6b6b, #ee5253);
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(238, 82, 83, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.auth-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(238, 82, 83, 0.3);
+}
+
+.switch-link {
+  margin-top: 25px;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.switch-link a {
+  color: #ee5253;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.switch-link a:hover {
+  color: #c0392b;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

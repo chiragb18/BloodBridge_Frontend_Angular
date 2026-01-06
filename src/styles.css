@@ -1,0 +1,109 @@
+/* Global Styles & Variables */
+:root {
+  --primary-color: #e63946; /* Vibrant Red */
+  --primary-dark: #b92b36;
+  --secondary-color: #f1faee; /* Off-white */
+  --accent-color: #457b9d; /* Calm Blue */
+  --text-dark: #1d3557;
+  --text-light: #f8f9fa;
+  --success-color: #2a9d8f;
+  --warning-color: #e9c46a;
+  --danger-color: #d00000;
+  --bg-gradient: linear-gradient(135deg, #fff5f5 0%, #ffe3e3 100%);
+  --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.08), 0 6px 6px rgba(0, 0, 0, 0.1);
+  --border-radius: 12px;
+  --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --transition-speed: 0.3s;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+}
+
+body {
+  background: var(--bg-gradient);
+  color: var(--text-dark);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: color var(--transition-speed);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  transition: all var(--transition-speed);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  box-shadow: 0 4px 6px rgba(230, 57, 70, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(230, 57, 70, 0.4);
+}
+
+.btn-secondary {
+  background-color: var(--accent-color);
+  color: white;
+  padding: 10px 20px;
+}
+
+.btn-secondary:hover {
+  background-color: #1d3557; /* Darker Blue */
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .printable-area, .printable-area * {
+    visibility: visible;
+  }
+  .printable-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}

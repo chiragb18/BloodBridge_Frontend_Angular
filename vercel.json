@@ -1,0 +1,19 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/Blood-Bank-AI-Frontend",
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "dest": "/browser/assets/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/browser/favicon.ico"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/browser/index.html"
+    }
+  ]
+}
+

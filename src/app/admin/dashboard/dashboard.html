@@ -1,0 +1,134 @@
+<div class="dashboard-container fade-in">
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div class="logo-section">
+      <h1>🛡️ Admin Panel</h1>
+    </div>
+    <div class="actions">
+      <button class="btn-logout" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="admin-nav">
+    <button [class.active]="currentView === 'donor-requests'" (click)="setView('donor-requests')">Donor
+      Requests</button>
+    <button [class.active]="currentView === 'hospital-requests'" (click)="setView('hospital-requests')">Hospital
+      Requests</button>
+    <button [class.active]="currentView === 'inventory'" (click)="setView('inventory')">Blood Store (Inventory)</button>
+  </nav>
+
+  <main class="dashboard-main">
+    <!-- Stats Overview -->
+    <section class="overview-grid">
+      <div class="admin-card blue">
+        <div class="card-icon">👥</div>
+        <div class="card-data">
+          <h3>Total Donors</h3>
+          <p class="data-value">{{ stats.donors }}</p>
+        </div>
+      </div>
+      <div class="admin-card green">
+        <div class="card-icon">🏥</div>
+        <div class="card-data">
+          <h3>Total Hospitals</h3>
+          <p class="data-value">{{ stats.hospitals }}</p>
+        </div>
+      </div>
+      <div class="admin-card red">
+        <div class="card-icon">🩸</div>
+        <div class="card-data">
+          <h3>Total Donations</h3>
+          <p class="data-value">{{ stats.donations }}</p>
+        </div>
+      </div>
+      <div class="admin-card orange">
+        <div class="card-icon">⏳</div>
+        <div class="card-data">
+          <h3>Pending Requests</h3>
+          <p class="data-value">{{ stats.requests }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: Donor Requests -->
+    <section class="request-queue card" *ngIf="currentView === 'donor-requests'">
+      <div class="view-header">
+        <h3>📢 Pending Donation Requests</h3>
+        <button class="refresh-btn" (click)="refreshAll()">🔄 Refresh</button>
+      </div>
+
+      <div *ngIf="pendingDonors.length === 0" class="empty-msg">No pending donor requests.</div>
+
+      <table class="request-table" *ngIf="pendingDonors.length > 0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let donor of pendingDonors">
+            <td>{{ donor.name }} <span class="blood-badge">{{ donor.bloodGroup }}</span></td>
+            <td>N/A</td>
+            <td>{{ donor.email }}</td>
+            <td>
+              <button class="btn-approve" (click)="approveDonation(donor)">Approve</button>
+              <button class="btn-reject" (click)="rejectDonation(donor)">Reject</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- VIEW: Hospital Requests -->
+    <section class="request-queue card" *ngIf="currentView === 'hospital-requests'">
+      <h3 style="color: #27ae60;">🏥 Hospital Blood Requests</h3>
+
+      <div *ngIf="hospitalRequestsQueue.length === 0" class="empty-msg">
+        <p>No hospital requests found.</p>
+      </div>
+
+      <table class="request-table" *ngIf="hospitalRequestsQueue.length > 0">
+        <thead>
+          <tr>
+            <th>Hospital</th>
+            <th>Patient</th>
+            <th>Group</th>
+            <th>Units</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let req of hospitalRequestsQueue">
+            <td><strong>{{ req.hospitalName }}</strong></td>
+            <td>{{ req.patientName }}</td>
+            <td><span class="blood-badge">{{ req.bloodGroup }}</span></td>
+            <td style="text-align: center;">{{ req.units }}</td>
+            <td>
+              <button class="btn-approve" (click)="approveHospitalRequest(req)">Approve</button>
+              <button class="btn-reject" (click)="rejectHospitalRequest(req)">Reject</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- VIEW: Inventory -->
+    <section class="oversight-panel card" *ngIf="currentView === 'inventory'">
+      <h3>🩸 System Blood Inventory</h3>
+      <div class="bar-chart-placeholder">
+        <div class="bar-group" *ngFor="let item of inventoryStats">
+          <div class="bar-label">{{ item.group }}</div>
+          <div class="bar-track">
+            <div class="bar-fill" [style.height.%]="(item.count / 10) * 100" [style.max-height.%]="100"></div>
+          </div>
+          <div class="bar-value">{{ item.count }}</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>

@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="header">
+    <h2>Donor Dashboard</h2>
+    <div class="user-info">
+      Welcome, <strong>{{ user?.name }}</strong> | <a (click)="logout()">Logout</a>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading your profile...</p>
+  </div>
+
+  <div class="content-grid" *ngIf="!isLoading">
+    <!-- Left Column: User Stats -->
+    <div class="card stats-card">
+      <h3>Your Profile</h3>
+      <table class="info-table">
+        <tr>
+          <td>Blood Group:</td>
+          <td><strong>{{ user?.bloodGroup }}</strong></td>
+        </tr>
+        <tr>
+          <td>Total Donations:</td>
+          <td><strong>{{ user?.donationsCount || 0 }}</strong></td>
+        </tr>
+        <tr>
+          <td>Last Donation:</td>
+          <td>{{ user?.lastDonationDate ? (user?.lastDonationDate | date:'longDate') : 'Never' }}</td>
+        </tr>
+        <tr>
+          <td>Email:</td>
+          <td>{{ user?.email }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Right Column: Donation Action & Rules -->
+    <div class="card action-card">
+      <h3>Donate Blood</h3>
+
+      <div class="status-section">
+        <!-- Show Eligible if canDonate is true AND we are not waiting for approval -->
+        <p *ngIf="canDonate && user?.donationStatus !== 'PENDING'" class="status-ready">✅ You are eligible to donate
+          blood.</p>
+
+        <p *ngIf="!canDonate" class="status-wait">⏳ Next eligibility in <strong>{{ daysLeft }} days</strong>.</p>
+
+        <p *ngIf="user?.donationStatus === 'PENDING'" class="status-pending">⏳ Donation request sent. Waiting for Admin
+          approval.</p>
+        <p *ngIf="user?.donationStatus === 'REJECTED'" class="status-rejected">❌ Your last donation request was rejected
+          by Admin. Please try again.</p>
+      </div>
+
+      <div class="rules-box">
+        <h4>Rules of Donation</h4>
+        <ul>
+          <li>Must be at least 18 years old.</li>
+          <li>Must weigh at least 50kg.</li>
+          <li>No alcohol consumption in last 24 hours.</li>
+          <li>Must be healthy and not suffering from cold/flu.</li>
+        </ul>
+      </div>
+
+      <!-- Action Buttons Logic -->
+      <ng-container *ngIf="user?.donationStatus !== 'PENDING'">
+
+        <!-- Case 1: Eligible -> Show Donate Button -->
+        <button *ngIf="canDonate" class="btn-donate" (click)="donateBlood()">Donate Now</button>
+
+        <!-- Case 2: Ineligible (Recently Donated) -> Show Certificate Button -->
+        <div *ngIf="!canDonate && (user?.donationsCount || 0) > 0" class="certificate-section">
+          <p>Thank you for your recent donation!</p>
+          <button class="btn-cert" (click)="downloadCertificate()">Download Certificate</button>
+        </div>
+
+      </ng-container>
+
+      <!-- Case 3: Pending -> Show Disabled Wait Button -->
+      <button *ngIf="user?.donationStatus === 'PENDING'" class="btn-pending" disabled>Request Pending...</button>
+
+    </div>
+  </div>
+
+  <!-- Print Only Certificate -->
+  <div class="printable-certificate">
+    <div class="cert-border">
+      <h1>Certificate of Appreciation</h1>
+      <p>This certifies that</p>
+      <h2>{{ user?.name | uppercase }}</h2>
+      <p>Has successfully donated blood ({{ user?.bloodGroup }}).</p>
+      <p>Date: {{ user?.lastDonationDate | date:'longDate' }}</p>
+      <div class="footer">
+        LifeLine Blood Bank
+      </div>
+    </div>
+  </div>
+</div>
