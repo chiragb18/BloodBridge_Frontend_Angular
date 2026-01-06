@@ -6,16 +6,27 @@ import { Injectable } from '@angular/core';
 export class StorageService {
 
   private USERS_KEY = 'users';
+  private REQUESTS_KEY = 'requests';
 
-  constructor() {}
+  constructor() {
+    this.initData();
+  }
 
-  // Get all users
+  private initData() {
+    if (!localStorage.getItem(this.USERS_KEY)) {
+      localStorage.setItem(this.USERS_KEY, JSON.stringify([]));
+    }
+    if (!localStorage.getItem(this.REQUESTS_KEY)) {
+      localStorage.setItem(this.REQUESTS_KEY, JSON.stringify([]));
+    }
+  }
+
+  // --- Users ---
   getUsers(): any[] {
     const users = localStorage.getItem(this.USERS_KEY);
     return users ? JSON.parse(users) : [];
   }
 
-  // Save user (register)
   addUser(user: any): boolean {
     const users = this.getUsers();
 
@@ -24,9 +35,16 @@ export class StorageService {
       return false; // email already exists
     }
 
-    users.push(user);
+    const newUser = { ...user, id: user.id || Math.random().toString(36).substr(2, 9) };
+    users.push(newUser);
     localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
     return true;
+  }
+
+  updateUser(updatedUser: any) {
+    let users = this.getUsers();
+    users = users.map(u => u.id === updatedUser.id ? updatedUser : u);
+    localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
   }
 
   // Login
@@ -51,6 +69,36 @@ export class StorageService {
   getLoggedInUser() {
     const user = localStorage.getItem('loggedInUser');
     return user ? JSON.parse(user) : null;
+  }
+
+  // --- Requests ---
+  getRequests(): any[] {
+    const requests = localStorage.getItem(this.REQUESTS_KEY);
+    return requests ? JSON.parse(requests) : [];
+  }
+
+  saveRequests(requests: any[]) {
+    localStorage.setItem(this.REQUESTS_KEY, JSON.stringify(requests));
+  }
+
+  addRequest(request: any) {
+    const requests = this.getRequests();
+    const newRequest = { ...request, id: request.id || Date.now().toString() };
+    requests.push(newRequest);
+    this.saveRequests(requests);
+    return newRequest;
+  }
+
+  updateRequest(updatedReq: any) {
+    let requests = this.getRequests();
+    requests = requests.map(r => r.id === updatedReq.id ? updatedReq : r);
+    this.saveRequests(requests);
+  }
+
+  deleteRequest(id: any) {
+    let requests = this.getRequests();
+    requests = requests.filter(r => r.id !== id);
+    this.saveRequests(requests);
   }
 }
 

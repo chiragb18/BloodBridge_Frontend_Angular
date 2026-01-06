@@ -1,48 +1,35 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { StorageService } from './storage';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class User {
-  private apiUrl = 'http://localhost:3000/users';
-
-  constructor(private http: HttpClient) { }
+  constructor(private storage: StorageService) { }
 
   registerUser(user: any) {
-    return this.http.post(this.apiUrl, user);
+    const success = this.storage.addUser(user);
+    return of(success);
   }
 
   getUsers() {
-    return this.http.get<any[]>(this.apiUrl);
+    return of(this.storage.getUsers());
   }
 
   login(email: string, password: string) {
-    return this.http.get<any[]>(
-      `${this.apiUrl}?email=${email}&password=${password}`
-    );
+    const user = this.storage.login(email, password);
+    return of(user ? [user] : []);
   }
 
   getUserByEmail(email: string) {
-    return this.http.get<any[]>(`${this.apiUrl}?email=${email}`);
+    const users = this.storage.getUsers();
+    const user = users.find(u => u.email === email);
+    return of(user ? [user] : []);
   }
 
   updateUser(user: any) {
-    return this.http.put(`${this.apiUrl}/${user.id}`, user);
-  }
-
-  // --- Hospital Request Management ---
-  private requestUrl = 'http://localhost:3000/requests';
-
-  getRequests() {
-    return this.http.get<any[]>(this.requestUrl);
-  }
-
-  addRequest(request: any) {
-    return this.http.post(this.requestUrl, request);
-  }
-
-  updateRequest(request: any) {
-    return this.http.put(`${this.requestUrl}/${request.id}`, request);
+    this.storage.updateUser(user);
+    return of(user);
   }
 }

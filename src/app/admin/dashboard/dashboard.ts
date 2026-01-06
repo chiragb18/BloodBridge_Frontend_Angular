@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { User } from '../../services/user';
 import { BloodRequest } from '../../services/blood-request';
+import { interval, startWith } from 'rxjs';
 
 @Component({
   selector: 'admin-dashboard',
@@ -24,7 +25,7 @@ export class AdminDashboard implements OnInit {
 
   inventoryStats: { group: string, count: number }[] = [];
   pendingDonors: any[] = [];
-  hospitalRequestsQueue: any[] = []; // Real hospital requests
+  hospitalRequestsQueue: any[] = [];
 
   constructor(
     private userService: User,
@@ -33,23 +34,28 @@ export class AdminDashboard implements OnInit {
   ) { }
 
   ngOnInit() {
-    // We'll use a more reactive approach to combine both data sources
-    this.refreshAll();
+    // Poll every 5 seconds for real-time updates from localStorage
+    interval(5000).pipe(
+      startWith(0)
+    ).subscribe(() => {
+      this.refreshAll();
+      this.requestService.refreshRequests();
+    });
 
     this.requestService.requests$.subscribe(reqs => {
-      this.hospitalRequestsQueue = reqs.filter(r => r.status === 'PENDING');
+      this.hospitalRequestsQueue = reqs.filter((r: any) => r.status === 'PENDING');
       this.syncStats();
     });
   }
 
   refreshAll() {
     this.userService.getUsers().subscribe(users => {
-      this.rawDonors = users.filter(u => u.role === 'DONOR');
-      this.pendingDonors = users.filter(u => u.donationStatus === 'PENDING');
+      this.rawDonors = users.filter((u: any) => u.role === 'DONOR');
+      this.pendingDonors = users.filter((u: any) => u.donationStatus === 'PENDING');
       this.stats.donors = this.rawDonors.length;
-      this.stats.hospitals = users.filter(u => u.role === 'HOSPITAL').length;
+      this.stats.hospitals = users.filter((u: any) => u.role === 'HOSPITAL').length;
 
-      const totalDonations = this.rawDonors.reduce((sum, donor) => sum + (donor.donationsCount || 0), 0);
+      const totalDonations = this.rawDonors.reduce((sum: number, donor: any) => sum + (donor.donationsCount || 0), 0);
       this.stats.donations = totalDonations;
 
       this.syncStats();
@@ -57,16 +63,13 @@ export class AdminDashboard implements OnInit {
   }
 
   syncStats() {
-    // Only calculate if we have donor data (otherwise inventory will falsely be 0)
-    if (this.rawDonors.length > 0) {
-      this.updateInventoryWithDeductions();
-    }
+    this.updateInventoryWithDeductions();
     this.stats.requests = this.pendingDonors.length + this.hospitalRequestsQueue.length;
   }
 
   rawDonors: any[] = [];
 
- 
+
 
   updateInventoryWithDeductions() {
     const inventoryMap: { [key: string]: number } = {};

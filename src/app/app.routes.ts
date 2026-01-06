@@ -10,9 +10,9 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
 
-  { path: 'admin/dashboard', component: AdminDashboard },
-  { path: 'donor/dashboard', component: DonorDashboard },
-  { path: 'hospital/dashboard', component: HospitalDashboard }
+  { path: 'admin-dashboard', component: AdminDashboard },
+  { path: 'donor-dashboard', component: DonorDashboard },
+  { path: 'hospital-dashboard', component: HospitalDashboard }
 ];
 
 export class AppRoutingModule { }

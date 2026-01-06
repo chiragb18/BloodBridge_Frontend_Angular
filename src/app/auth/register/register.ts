@@ -26,13 +26,14 @@ export class Register {
     donationsCount: 0
   };
 
-  constructor(private router: Router, private userService: User,private storage:StorageService) { }
+  constructor(private router: Router, private userService: User, private storage: StorageService) { }
 
   onRegister() {
     const success = this.storage.addUser(this.user);
 
     if (success) {
       alert('Registered successfully');
+      this.router.navigate(['/login']);
     } else {
       alert('Email already exists');
     }

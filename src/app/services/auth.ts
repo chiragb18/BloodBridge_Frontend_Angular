@@ -1,46 +1,31 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-
+import { StorageService } from './storage';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
+  constructor(private storage: StorageService) { }
 
-    register(user: any) {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    users.push(user);
-    localStorage.setItem('users', JSON.stringify(users));
+  register(user: any) {
+    this.storage.addUser(user);
   }
 
   login(email: string, password: string): User | null {
-    const users:User[]=JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(
-      u => u.email === email && u.password === password
-    );
-   
-    if(user){
-      localStorage.setItem('loggedInUser', JSON.stringify(user));
+    const user = this.storage.login(email, password);
+    if (user) {
+      this.storage.setLoggedInUser(user);
       return user;
     }
     return null;
   }
 
-  logout():void{
-    localStorage.removeItem('loggedInUser');
+  logout(): void {
+    this.storage.logout();
   }
 
   getLoggedInUser(): User | null {
-    const userJson = localStorage.getItem('loggedInUser');
-    if (!userJson) {
-      return null;
-    }
-
-    try {
-      return JSON.parse(userJson) as User;
-    } catch (e) {
-      console.warn('Failed to parse loggedInUser from localStorage', e);
-      return null;
-    }
+    return this.storage.getLoggedInUser();
   }
 }
