@@ -17,6 +17,7 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/Blood-Bank-AI-Frontend",
+             "baseHref": "/",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -25,7 +26,8 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/material-theme.scss", "src/styles.css"]
+            "styles": ["src/material-theme.scss", 
+                        "src/styles.css"]
           },
           "configurations": {
             "production": {
